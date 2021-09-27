@@ -1,17 +1,17 @@
 package main
 
 import (
-"database/sql"
-"fmt"
-"github.com/beevik/etree"
-"io/ioutil"
-"net/http"
-"strconv"
-"strings"
-"time"
+	"database/sql"
+	"fmt"
+	"github.com/beevik/etree"
+	"io/ioutil"
+	"net/http"
+	"strconv"
+	"strings"
+	"time"
 
-_ "github.com/denisenkom/go-mssqldb"
-"gopkg.in/gomail.v2"
+	_ "github.com/denisenkom/go-mssqldb"
+	"gopkg.in/gomail.v2"
 )
 
 const (
@@ -31,9 +31,9 @@ const (
 	smtpServer = "10.0.8.27"
 	smtpPort   = 25
 
-	MailReport    = "service.uid@csisolar.com"
-	MailAdmin     = "billy.zhou@csisolar.com"
-	MailKeming    = "keming.zan@csisolar.com"
+	MailReport = "service.uid@csisolar.com"
+	MailAdmin  = "billy.zhou@csisolar.com"
+	MailKeming = "keming.zan@csisolar.com"
 
 	soapURL = "http://csicn02hcmd1.csisolar.com:8131/sap/bc/srt/wsdl/flv_10002A111AD1/bndg_url/sap/bc/srt/rfc/sap/zweb_get_kostl/300/zweb_get_kostl/zweb_get_kostl?sap-client=300&sap-language=ZH"
 
@@ -151,10 +151,11 @@ func main() {
 		}
 
 		upsertQuery := fmt.Sprintf(`IF EXISTS(SELECT zpernr_id FROM cost_centers WHERE zpernr_id = '%s') UPDATE cost_centers SET [kostl]='%s', [ltext]='%s', [kostlbukrs]='%s', [ltextbutxt]='%s', [bukrs]='%s', [aedtm]='%s', [abrud]='%s', [updated_at]='%s', [deleted_at]='NULL' WHERE [zpernr_id] ='%s' ELSE INSERT INTO cost_centers (zpernr_id,kostl,ltext,kostlbukrs,ltextbutxt,bukrs,butxt,aedtm,abrud,created_at,updated_at) VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s');`, cc.ZPERNRID, cc.KOSTL, cc.LTEXT, cc.KOSTLBUKRS, cc.LTEXTBUTXT, cc.BUKRS, cc.AEDTM, cc.AEDTM, timeNow, cc.ZPERNRID, cc.ZPERNRID, cc.KOSTL, cc.LTEXT, cc.KOSTLBUKRS, cc.LTEXTBUTXT, cc.BUKRS, cc.BUTXT, cc.AEDTM, cc.ABRUD, timeNow, timeNow)
-		fmt.Println(upsertQuery)
+		//fmt.Println(upsertQuery)
 		QueryMsSql(upsertQuery)
 
 		upsertCount++
+		//fmt.Println(upsertCount)
 
 		//orm.Find(&ccFind, "zpernr_id = ?", cc.ZPERNRID)
 		//if ccFind.ZPERNRID == "" {
@@ -259,4 +260,3 @@ func QueryMsSqlRow(sqlquery string) (count int) {
 
 	return count
 }
-
